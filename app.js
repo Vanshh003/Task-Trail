@@ -2,6 +2,10 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import _ from "lodash";
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 
 const app = express();
 app.set('view engine', 'ejs');
@@ -11,7 +15,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect(process.env.mongo_uri).catch((e) => {
+  console.log("error occured while connecting mongo", e);
+});
 
 
 const itemsSchema = {
